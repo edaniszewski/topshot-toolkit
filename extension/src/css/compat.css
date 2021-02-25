@@ -1,0 +1,18 @@
+/*
+    Fixes a chrome bug where having the extension menu open on a second monitor
+    on macOS causes the menu inputs/updates to be laggy.
+    See: https://stackoverflow.com/a/64113061
+*/
+@keyframes redraw {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0.99;
+    }
+}
+
+html {
+    animation: redraw 1s linear infinite;
+}

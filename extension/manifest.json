@@ -1,0 +1,47 @@
+{
+  "name": "Top Shot Toolkit",
+  "version": "0.1.0",
+  "description": "Simple toolkit to help inform decisions when buying Moments.",
+  "manifest_version": 2,
+  "icons": {
+    "16": "src/icons/icon_16.png",
+    "24": "src/icons/icon_24.png",
+    "32": "src/icons/icon_32.png",
+    "48": "src/icons/icon_48.png",
+    "64": "src/icons/icon_64.png",
+    "128": "src/icons/icon_128.png"
+  },
+  "browser_action": {
+    "default_popup": "src/html/popup.html",
+    "default_title": "Top Shot Toolkit",
+    "default_icon": {
+      "128": "src/icons/icon_128.png"
+    }
+  },
+
+  "content_scripts": [
+    {
+      "js": [
+
+        "src/js/vendored/chart-2.9.4.min.js",
+        "src/js/packs.js",
+        "src/js/moments.js",
+        "src/js/dispatch.js"
+      ],
+      "matches": [
+        "*://*.nbatopshot.com/*"
+      ]
+    }
+  ],
+  "background": {
+    "scripts": [
+      "src/js/background.js"
+    ],
+    "persistent": false
+  },
+  "web_accessible_resources": [],
+  "permissions": [
+    "webNavigation",
+    "storage"
+  ]
+}

@@ -1,0 +1,17 @@
+@font-face {
+  font-family: "Shapiro";
+  src        : url("../fonts/Shapiro35Feather.woff2") format("woff2");
+  font-weight: 200;
+}
+
+@font-face {
+  font-family: "Shapiro";
+  src        : url("../fonts/Shapiro65LightHeavy.woff2") format("woff2");
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "Shapiro";
+  src        : url("../fonts/Shapiro75HeavyExtd.woff2") format("woff2");
+  font-weight: 700;
+}

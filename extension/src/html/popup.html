@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="../css/fonts.css">
+    <link rel="stylesheet" href="../css/popup.css">
+    <link rel="stylesheet" href="../css/compat.css">
+</head>
+
+<body>
+
+    <div class="outer-wrap">
+        <div class="column-flex">
+            <div id="popup-header">
+                <div class="row-flex">
+                    <div id="header-logo">
+                        <img src="../img/popup/logo.svg">
+                    </div>
+                    <div id="header-title">
+                        <div class="vertical-center air-title">Top Shot Toolkit</div>
+                    </div>
+                    <div id="header-more">
+                        <div id="submenu-button" class="vertical-center"><img src="../img/popup/more.svg"></div>
+
+                        <div id='submenu-select'>
+                            <a href="https://www.nbatopshot.com/user/@who_is_lebron_jame" target="_blank">
+                                Donate<br/>
+                                <span class="caption">Gift a moment to the author</span>
+                            </a>
+                            <!--<a href="#" target="_blank">
+                                Rate<br/>
+                                <span class="caption">Rate the extension on the webstore</span>
+                            </a>-->
+                            <a href="https://github.com/edaniszewski/topshot-toolkit" target="_blank">
+                                Contribute<br/>
+                                <span class="caption">Report a bug, contribute a feature</span>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div id="popup-body">
+                <div id="body-wrap">
+                    <div class="column-flex">
+                        <div>
+                            <div class="section-title">packs</div>
+                            <div class="column-flex">
+                                <div>
+                                    <input id="pack-disable-vid" type="checkbox">
+                                    <label id="pack-disable-vid-label" title="Disable any video elements which may autoplay on the 'packs' page to reduce visual clutter.">disable videos</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="section-title">Moments</div>
+                            <div class="column-flex">
+                                <div>
+                                    <input id="moments-show-chart" type="checkbox">
+                                    <label id="moments-show-chart-label" title="Chart a moment's ask prices as a visual aid.">show chart</label>
+                                </div>
+                                <div>
+                                    <input id="moments-enable-sort" type="checkbox">
+                                    <label id="moments-enable-sort-label" title="Enable sorting moments for sale by serial number as well as ask price.">enable custom sort</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="popup-footer">
+                <p></p>
+            </div>
+        </div>
+    </div>
+    <script src="../js/popup/ui.js"></script>
+</body>
+
+</html>
