@@ -29,5 +29,5 @@ Get it on the [Chrome Web Store](https://chrome.google.com/webstore/detail/top-s
 ## Support
 
 If you find this extension useful and wish to give back, gift a moment to the author,
-(`@who_is_lebron_jame`)[https://www.nbatopshot.com/user/@who_is_lebron_jame]. This is by no means required,
+[`@who_is_lebron_jame`](https://www.nbatopshot.com/user/@who_is_lebron_jame). This is by no means required,
 but is always appreciated.
