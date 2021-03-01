@@ -1,19 +1,40 @@
 
-function onMoments() {
+function onMomentsPageLoad() {
   initialize();
 }
 
+function isMomentListLoaded() {
+  return document.getElementById("moment-detailed-serialNumber") != null;
+}
+
+function isMomentDataLoaded() {
+  var dropdown = document.getElementById("moment-detailed-serialNumber");
+  var tables = document.getElementsByClassName("TableStyles__Table-sc-1saikeo-1");
+  return (dropdown != null) && (tables.length == 1)
+}
+
+
 function initialize() {
-  chrome.storage.sync.get(["momentsEnableSort"], (result) => {
-    if (result.momentsEnableSort) {
-      initializeMomentSort();
-    }
+  runAfter(isMomentListLoaded, 50, 5000, () => {
+    chrome.storage.sync.get(["momentsEnableSort"], (result) => {
+      if (result.momentsEnableSort) {
+        // Wait a short period of time to improve reliability of DOM manipulation
+        // and updates. Since the page loads dynamically, this helps ensure everything
+        // we need is present.
+        setTimeout(initializeMomentSort, 250);
+      }
+    });
   });
 
-  chrome.storage.sync.get(["momentsShowChart"], (result) => {
-    if (result.momentsShowChart) {
-      initializeMomentChart();
-    }
+  runAfter(isMomentDataLoaded, 50, 5000, () => {
+    chrome.storage.sync.get(["momentsShowChart"], (result) => {
+      if (result.momentsShowChart) {
+        // Wait a short period of time to improve reliability of DOM manipulation
+        // and updates. Since the page loads dynamically, this helps ensure everything
+        // we need is present.
+        setTimeout(initializeMomentChart, 250);
+      }
+    });
   });
 }
 
@@ -176,127 +197,126 @@ function filterOutliers(someArray) {
 function initializeMomentChart() {
   if (document.getElementById("tstk-chart-container") == null) {
     elems = document.getElementsByClassName('Insertsstyles__Row-sc-11i7qci-1')
-  pricesParent = elems[0]
+    pricesParent = elems[0]
 
-  var dropdown = document.getElementById('moment-detailed-serialNumber');
-  var optionsList = dropdown.options;
+    var dropdown = document.getElementById('moment-detailed-serialNumber');
+    var optionsList = dropdown.options;
 
-  var newOptionsList = []
-  var dataSet = []
+    var newOptionsList = []
+    var dataSet = []
 
-  for (var i = 0; i < optionsList.length; i++) {
-    // Get the moment number. This will be plotted on the x-axis of the chart.
-    momentNumber = optionsList[i].value
+    for (var i = 0; i < optionsList.length; i++) {
+      // Get the moment number. This will be plotted on the x-axis of the chart.
+      momentNumber = optionsList[i].value
 
-    // Get the price
-    price = optionsList[i].text.split('-')[1]
-    price = price.split('(')[0]
-    price = price.replace(/\s|,|\$/g, '')
-    price = parseFloat(price)
-    optionsList[i].price = price
+      // Get the price
+      price = optionsList[i].text.split('-')[1]
+      price = price.split('(')[0]
+      price = price.replace(/\s|,|\$/g, '')
+      price = parseFloat(price)
+      optionsList[i].price = price
 
-    // Store the data points in the data set.
-    dataSet.push({
-      x: parseInt(momentNumber),
-      y: price,
-    })
-  }
-
-  // Next, collect data from the latest sales.
-  tables = document.getElementsByTagName('table')
-  recentSales = tables[tables.length - 1]
-  recentSalesBody = recentSales.getElementsByTagName('tbody')[0]
-  rows = recentSalesBody.getElementsByTagName('tr')
-
-  top3Sales = []
-  otherSales = []
-  for (var i = 0; i < rows.length; i++) {
-    price = rows[i].children[2].innerText
-    serial = rows[i].children[3].innerText
-
-    price = price.split('#')[0]
-    price = price.replace(/\s|,|\$/g, '')
-    price = parseFloat(price)
-
-    serial = serial.replace(/\s|#/g, '')
-    serial = parseInt(serial)
-
-    if (i < 3) {
-      top3Sales.push({
-        x: serial,
-        y: price
-      })
-    } else {
-      otherSales.push({
-        x: serial,
-        y: price
+      // Store the data points in the data set.
+      dataSet.push({
+        x: parseInt(momentNumber),
+        y: price,
       })
     }
-  }
 
-  ar = Array.from(dataSet, i => i.y)
-  fltrd = filterOutliers(ar)
-  q90 = quantile(ar, 0.87)
-  fltrSet = new Set(fltrd);
+    // Next, collect data from the latest sales.
+    recentSales = document.getElementsByClassName("TableStyles__Table-sc-1saikeo-1")[0]
+    recentSalesBody = recentSales.getElementsByTagName('tbody')[0]
+    rows = recentSalesBody.getElementsByTagName('tr')
 
-  normalizedDataSet = []
-  for (var i = 0; i < dataSet.length; i++) {
-    if (dataSet[i].y < q90) {
-      normalizedDataSet.push(dataSet[i])
-    }
-  }
+    top3Sales = []
+    otherSales = []
+    for (var i = 0; i < rows.length; i++) {
+      price = rows[i].children[2].innerText
+      serial = rows[i].children[3].innerText
 
-  pricePointSize = 2
-  if (normalizedDataSet.length <= 75) {
-    pricePointSize = 4
-  }
+      price = price.split('#')[0]
+      price = price.replace(/\s|,|\$/g, '')
+      price = parseFloat(price)
 
-  pricesParent.insertAdjacentHTML('afterend', '<div id="tstk-chart-container" class="Insertsstyles__Row-sc-11i7qci-1 gUaupL"><div class="chart-container"><canvas id="myChart" style="width:100%;"></canvas></div></div>')
+      serial = serial.replace(/\s|#/g, '')
+      serial = parseInt(serial)
 
-  var ctx = document.getElementById('myChart').getContext('2d');
-  var myChart = new Chart(ctx, {
-      type: 'scatter',
-      data: {
-          datasets: [
-            {
-                label: 'Top 3',
-                data: top3Sales,
-                pointBackgroundColor: '#ff5b32',
-                borderColor: '#ff5b32',
-                borderWidth: 1,
-                pointRadius: pricePointSize,
-                fill: false,
-            },
-            {
-                label: 'Latest',
-                data: otherSales,
-                pointBackgroundColor: '#ffc232',
-                borderColor: '#ffc232',
-                borderWidth: 1,
-                pointRadius: pricePointSize,
-                fill: false,
-            },
-            {
-                label: 'Ask',
-                data: normalizedDataSet,
-                pointBackgroundColor: '#325fff',
-                borderColor: '#325fff',
-                borderWidth: 1,
-                pointRadius: pricePointSize,
-                fill: false,
-            }
-          ]
-      },
-      options: {
-          responsive: false,
-          scales: {
-              xAxes: [{
-                  display: true,
-                  type: 'linear',
-                  position: 'bottom',
-              }]
-          }
+      if (i < 3) {
+        top3Sales.push({
+          x: serial,
+          y: price
+        })
+      } else {
+        otherSales.push({
+          x: serial,
+          y: price
+        })
       }
-  });
+    }
+
+    ar = Array.from(dataSet, i => i.y)
+    fltrd = filterOutliers(ar)
+    q90 = quantile(ar, 0.87)
+    fltrSet = new Set(fltrd);
+
+    normalizedDataSet = []
+    for (var i = 0; i < dataSet.length; i++) {
+      if (dataSet[i].y < q90) {
+        normalizedDataSet.push(dataSet[i])
+      }
+    }
+
+    pricePointSize = 2
+    if (normalizedDataSet.length <= 75) {
+      pricePointSize = 4
+    }
+
+    pricesParent.insertAdjacentHTML('afterend', '<div id="tstk-chart-container" class="Insertsstyles__Row-sc-11i7qci-1 gUaupL"><div class="chart-container"><canvas id="myChart" style="width:100%;"></canvas></div></div>')
+
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'scatter',
+        data: {
+            datasets: [
+              {
+                  label: 'Top 3',
+                  data: top3Sales,
+                  pointBackgroundColor: '#ff5b32',
+                  borderColor: '#ff5b32',
+                  borderWidth: 1,
+                  pointRadius: pricePointSize,
+                  fill: false,
+              },
+              {
+                  label: 'Latest',
+                  data: otherSales,
+                  pointBackgroundColor: '#ffc232',
+                  borderColor: '#ffc232',
+                  borderWidth: 1,
+                  pointRadius: pricePointSize,
+                  fill: false,
+              },
+              {
+                  label: 'Ask',
+                  data: normalizedDataSet,
+                  pointBackgroundColor: '#325fff',
+                  borderColor: '#325fff',
+                  borderWidth: 1,
+                  pointRadius: pricePointSize,
+                  fill: false,
+              }
+            ]
+        },
+        options: {
+            responsive: false,
+            scales: {
+                xAxes: [{
+                    display: true,
+                    type: 'linear',
+                    position: 'bottom',
+                }]
+            }
+        }
+    });
   }
 }

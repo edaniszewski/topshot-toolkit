@@ -1,6 +1,6 @@
 {
   "name": "Top Shot Toolkit",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Simple toolkit to help inform decisions when buying Moments.",
   "manifest_version": 2,
   "icons": {
@@ -22,8 +22,10 @@
   "content_scripts": [
     {
       "js": [
-
         "src/js/vendored/chart-2.9.4.min.js",
+        "src/js/common.js",
+        "src/js/nav.js",
+        "src/js/user.js",
         "src/js/packs.js",
         "src/js/moments.js",
         "src/js/dispatch.js"
@@ -39,7 +41,11 @@
     ],
     "persistent": false
   },
-  "web_accessible_resources": [],
+  "web_accessible_resources": [
+    "src/img/following.svg",
+    "src/img/plus-sign-hollow.svg",
+    "src/img/minus-sign-hollow.svg"
+  ],
   "permissions": [
     "webNavigation",
     "storage"
