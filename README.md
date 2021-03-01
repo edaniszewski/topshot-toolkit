@@ -2,6 +2,8 @@
 
 A Chrome extension to help make informed decisions when buying moments.
 
+Get it on the [Chrome Web Store](https://chrome.google.com/webstore/detail/top-shot-toolkit/nhiijiajgkhdnggjnamiijohbbelagjj).
+
 ## Features
 
 * Allows you to disable auto-playing videos on the "packs" page for a cleaner UI.
