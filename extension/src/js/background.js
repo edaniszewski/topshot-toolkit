@@ -23,7 +23,6 @@ eventList.forEach(evt => {
 
 
 chrome.runtime.onMessage.addListener(function(request, sender, send) {
-  console.log('got message: %o', request)
   if (request.action == "user-followed") {
     chrome.tabs.getSelected(null, function(tab) {
       chrome.tabs.sendMessage(tab.id, {
