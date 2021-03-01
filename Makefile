@@ -1,7 +1,10 @@
 
-VERSION := 0.1.0
+VERSION := $$(cat extension/manifest.json | jq .version | tr -d \")
 
-.PHONY: pack
+.PHONY: pack version
 
 pack:
 	zip -r topshot-toolkit-${VERSION}.zip extension
+
+version:
+	@echo ${VERSION}
