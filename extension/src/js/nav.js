@@ -97,6 +97,7 @@ function makeNavUserMenu() {
       divMenuUsers.appendChild(placeholder);
 
     } else {
+      users.sort();
       for (i=0;i<users.length;i++) {
         userItem = makeUserNavItem(users[i]);
         divMenuUsers.appendChild(userItem);

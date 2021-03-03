@@ -27,3 +27,44 @@ function runAfter(cond, intervalMs, timeoutMs, callback) {
     clearInterval(intervalID);
   }, timeoutMs);
 }
+
+
+/**
+ * Remove all occurrences of the given value from the array.
+ *
+ * @param {array} arr - The array to remove occurrences of the value from.
+ * @param {any} value - The value to remove.
+ *
+ * @returns {array} - The array provided as a parameter. It is modified in place
+ *    so is only returned as a convenience.
+ */
+function removeFromArray(arr, value) {
+  var i = 0;
+  while (i < arr.length) {
+    if (arr[i] === value) {
+      arr.splice(i, 1);
+    } else {
+      ++i;
+    }
+  }
+  return arr;
+}
+
+/**
+ * Run the wrapped function only once. This is useful to ensure that DOM manipulation
+ * functions run only once, even if tracked events fire multiple times for a page change.
+ *
+ * See: https://davidwalsh.name/javascript-once
+ *
+ */
+function once(fn, context) {
+  var result;
+
+  return function() {
+    if (fn) {
+      result = fn.apply(context || this, arguments);
+      fn = context = null;
+    }
+    return result;
+  };
+}
