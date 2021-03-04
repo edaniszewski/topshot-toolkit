@@ -143,8 +143,8 @@ function sortMoments(sortBy) {
   }
 
   // replace listing with their sorted correspondants
-  for (var i = startIdx; i <= optionsList.length; i++) {
-      optionsList[i] = newList[i];
+  for (var i = 0; i < newList.length; i++) {
+      optionsList[i + startIdx] = newList[i];
   }
   optionsList[0].selected = true;
 }
