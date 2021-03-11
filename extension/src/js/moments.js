@@ -145,10 +145,8 @@ function sortMoments(sortBy) {
   switch (sortBy) {
     case "ask":
       idx = Math.min(1, optionsList.length);
-      optionsList[idx].selected = true;
       break;
     case "serial":
-      optionsList[0].selected = true;
       break;
   }
 }
