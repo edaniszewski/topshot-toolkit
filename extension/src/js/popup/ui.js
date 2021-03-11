@@ -44,4 +44,6 @@ ready(() => {
       submenu.classList.add("menuactive");
     }
   });
+
+  document.getElementById('ext-version').innerText = "v"+getExtensionVersion();
 });

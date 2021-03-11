@@ -137,3 +137,9 @@ html {
     transform-origin: top center;
     opacity         : 0;
 }
+
+#ext-version {
+    float    : right;
+    margin   : 2px 5px;
+    font-size: 9px;
+}
