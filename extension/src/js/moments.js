@@ -120,33 +120,37 @@ function sortMoments(sortBy) {
       newList.push(optionsList[i]);
   }
 
-  // todo: switch?
-  if (sortBy == "ask") {
+  switch (sortBy) {
+    case "ask":
       newList = newList.sort((a, b) => {
-          if (parseFloat(a.ask) === parseFloat(b.ask)) {
+          if (parseFloat(a.ask) === parseFloat(b.ask))
             return 0;
-          }
-          else {
-              return (parseFloat(a.ask) < parseFloat(b.ask)) ? -1 : 1;
-          }
+          return (parseFloat(a.ask) < parseFloat(b.ask)) ? -1 : 1;
       });
-  }
-  else if (sortBy == "serial") {
+      break;
+    case "serial":
       newList = newList.sort((a, b) => {
-          if (parseInt(a.value) === parseInt(b.value)) {
+          if (parseInt(a.value) === parseInt(b.value))
               return 0;
-          }
-          else {
-              return (parseInt(a.value) < parseInt(b.value)) ? -1 : 1;
-          }
+          return (parseInt(a.value) < parseInt(b.value)) ? -1 : 1;
       });
+      break;
   }
 
   // replace listing with their sorted correspondants
   for (var i = 0; i < newList.length; i++) {
       optionsList[i + startIdx] = newList[i];
   }
-  optionsList[0].selected = true;
+
+  switch (sortBy) {
+    case "ask":
+      idx = Math.min(1, optionsList.length);
+      optionsList[idx].selected = true;
+      break;
+    case "serial":
+      optionsList[0].selected = true;
+      break;
+  }
 }
 
 
