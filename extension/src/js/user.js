@@ -6,7 +6,7 @@ function onUserPageLoad() {
 
 function userMetaDataExists() {
   elems = document.getElementsByClassName("ProfileInfo__StyledMetaData-sc-1bw24g7-7");
-  return elems.length == 2;
+  return elems.length >= 1;
 }
 
 
@@ -39,13 +39,13 @@ function addFollowToDOM() {
 
     var container = document.createElement("p");
     container.id = "tstk-follow-container";
-    container.className = "cOlCko";
+    container.className = "egTaPu";
     var link = document.createElement("a");
 
     var img = document.createElement("img");
     img.id = "tstk-follow-img";
-    img.style.width = "20px";
-    img.style.height = "20px";
+    img.style.width = "18px";
+    img.style.height = "18px";
 
     var textSpan = document.createElement("span");
     textSpan.id = "tstk-follow-text"

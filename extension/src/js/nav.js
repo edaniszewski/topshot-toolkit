@@ -139,6 +139,8 @@ function makeUserNavItem(username) {
   usrLink.id = "tstk-nav-user-"+username;
 
   usrDiv.style.color = "#fff";
+  usrDiv.style.paddingTop = "5px";
+  usrDiv.style.paddingBottom = "5px";
   usrDiv.className = "hhszpk gaQghz";
   usrSpan.className = "jjNwrn";
   usrSpan.innerText = username;

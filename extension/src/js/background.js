@@ -23,20 +23,24 @@ eventList.forEach(evt => {
 
 
 chrome.runtime.onMessage.addListener(function(request, sender, send) {
-  if (request.action == "user-followed") {
-    chrome.tabs.getSelected(null, function(tab) {
-      chrome.tabs.sendMessage(tab.id, {
-        action: request.action,
-        user: request.user,
+  switch (request.action) {
+    case "user-followed":
+      chrome.tabs.getSelected(null, (tab) => {
+        chrome.tabs.sendMessage(tab.id, {
+          action: request.action,
+          user: request.user,
+        });
       });
-    });
-  }
-  else if (request.action == "user-unfollowed") {
-    chrome.tabs.getSelected(null, function(tab) {
-      chrome.tabs.sendMessage(tab.id, {
-        action: request.action,
-        user: request.user,
+      break;
+
+    case "user-unfollowed":
+      chrome.tabs.getSelected(null, (tab) => {
+        chrome.tabs.sendMessage(tab.id, {
+          action: request.action,
+          user: request.user,
+        });
       });
-    });
+      break;
+
   }
 });
